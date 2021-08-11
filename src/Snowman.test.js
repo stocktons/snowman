@@ -22,7 +22,6 @@ it("matches snapshot", function() {
     })
 
 it("only allows maxGuesses", function() {
-    // const {container} = render(<Snowman maxWrong={MAX_WRONG} words={["apple"]}/>);
     clickLetter("b");
     clickLetter("o");
     clickLetter("t");

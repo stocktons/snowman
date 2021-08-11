@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { randomWord, ENGLISH_WORDS } from "./words";
 import "./Snowman.css";
 import img0 from "./0.png";
 import img1 from "./1.png";
@@ -28,7 +28,7 @@ function Snowman(props) {
 
   const [nWrong, setNWrong] = useState(0);
   const [guessedLetters, setGuessedLetters] = useState(new Set());
-  const [answer, setAnswer] = useState((props.words)[0]);
+  const [answer, setAnswer] = useState((randomWord(props.words)));
 
   /** guessedWord: show current-state of word:
    if guessed letters are {a,p,e}, show "app_e" for "apple"
@@ -69,7 +69,7 @@ function Snowman(props) {
     ));
   }
 
-  /**TODO: */
+  /** generateButtonsOrMsg: return Msg or generates buttons using generateButtons*/
   function generateButtonsOrMsg() {
     let win = !(guessedWord().includes("_"));
     if(win) return "You win!"
@@ -81,6 +81,18 @@ function Snowman(props) {
     }
   }
 
+  /** handleReset: restarts the game
+   * - picks a new random word
+   * - reset guessed list
+   * - reset number of wrong guesses
+   */
+  function handleReset() {
+    setAnswer(a => randomWord(props.words));
+    setGuessedLetters(g => new Set());
+    setNWrong(n => 0);
+
+  }
+
   /** render: render game */
   return (
       <div className="Snowman">
@@ -88,6 +100,7 @@ function Snowman(props) {
         <p>Number wrong: {nWrong} </p>
         <p className="Snowman-word">{guessedWord()}</p>
         <p>{generateButtonsOrMsg()}</p>
+        <button className="reset" onClick={handleReset}>Reset</button>
       </div>
   );
 }
@@ -95,7 +108,7 @@ function Snowman(props) {
 Snowman.defaultProps = {
   maxWrong: 6,
   images: [img0, img1, img2, img3, img4, img5, img6],
-  words: ["apple"],
+  words: ENGLISH_WORDS,
 };
 
 
