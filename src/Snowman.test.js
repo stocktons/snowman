@@ -2,6 +2,15 @@ import Snowman from "./Snowman";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 
+const MAX_WRONG = 3;
+let renderedGame;
+function clickLetter(letter) {
+    return fireEvent.click(renderedGame.getByText(letter));
+}
+
+beforeEach(function () {
+    renderedGame = render(<Snowman maxWrong={MAX_WRONG} words={["apple"]}/>);
+});
 
 it("renders without crashing", function() {
     render(<Snowman />);
@@ -13,20 +22,12 @@ it("matches snapshot", function() {
     })
 
 it("only allows maxGuesses", function() {
-    const { container } = render(<Snowman words={["apple"]}/>);
-    const button = container.querySelector('button');
+    // const {container} = render(<Snowman maxWrong={MAX_WRONG} words={["apple"]}/>);
+    clickLetter("b");
+    clickLetter("o");
+    clickLetter("t");
 
-    fireEvent.click(button.toHaveValue("w"));
-    fireEvent.click(button.toHaveValue("q"));
-    fireEvent.click(button.toHaveValue("s"));
-    fireEvent.click(button.toHaveValue("x"));
-    fireEvent.click(button.toHaveValue("z"));
-    fireEvent.click(button.toHaveValue("c"));
-
-    const message = container.querySelector(".message");
-
-    expect(button).not.toBeInTheDocument();
-    expect(message).toHaveTextContent("You lose");
+    expect(renderedGame.getByText("You lose: apple")).toBeInTheDocument();
 })
 
 

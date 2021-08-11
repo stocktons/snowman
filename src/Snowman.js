@@ -69,13 +69,25 @@ function Snowman(props) {
     ));
   }
 
+  /**TODO: */
+  function generateButtonsOrMsg() {
+    let win = !(guessedWord().includes("_"));
+    if(win) return "You win!"
+
+    if(nWrong < props.maxWrong) {
+      return generateButtons();
+    } else {
+      return `You lose: ${answer}`;
+    }
+  }
+
   /** render: render game */
   return (
       <div className="Snowman">
         <img src={(props.images)[nWrong]} alt={nWrong} />
         <p>Number wrong: {nWrong} </p>
         <p className="Snowman-word">{guessedWord()}</p>
-        <p>{generateButtons()}</p>
+        <p>{generateButtonsOrMsg()}</p>
       </div>
   );
 }
